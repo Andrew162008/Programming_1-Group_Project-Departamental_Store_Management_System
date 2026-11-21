@@ -15,7 +15,7 @@ const double TAX_RATE = 0.07;   // 7% tax
 const double BULK_DISCOUNT = 0.05;   // 5% off when buying 10 or more of one item
 const int    BULK_AMOUNT = 10;
 
-// An ARRAY of text: department number 0 is "Grocery", 1 is "Electronics"...
+// An ARRAY of text: department number 0 is "Grocery", 1 is "Electronics" etc
 string departmentNames[NUM_DEPTS] = {
     "Grocery", "Electronics", "Clothing", "Household", "Beauty"
 };
@@ -224,21 +224,21 @@ public:
 //  Holds the ARRAYS and all the functions that run the store.
 class Store {
 private:
-    // ----- ARRAYS of objects -----
+    // ARRAYS of objects
     Product  products[MAX_PRODUCTS];
     Customer customers[MAX_CUSTOMERS];
 
-    // ----- ARRAYS of numbers (one slot per sale) -----
+    // ARRAYS of numbers (one slot per sale)
     int    saleReceipt[MAX_SALES];
     int    saleUnits[MAX_SALES];
     double saleTotal[MAX_SALES];
 
-    // ----- counters: how many slots of each array are used -----
+    // counters: how many slots of each array are used
     int productCount;
     int customerCount;
     int saleCount;
 
-    // ----- next numbers to hand out -----
+    // next numbers to hand out
     int nextProductId;
     int nextCustomerId;
     int nextReceipt;
@@ -320,7 +320,7 @@ public:
         *b = temp;
     }
 
-    // ===== VIEWING PRODUCTS =====
+    // VIEWING PRODUCTS
 
     void showTableHeader() {
         cout << left << setw(7) << "ID"
@@ -371,7 +371,7 @@ public:
         sortProducts(false);                    // put the list back in ID order
     }
 
-    // ===== MANAGING PRODUCTS =====
+    // MANAGING PRODUCTS
 
     void addNewProduct() {
         printTitle("ADD NEW PRODUCT");
@@ -422,7 +422,7 @@ public:
         cout << count << " product(s) need restocking.\n";
     }
 
-    // ===== CUSTOMERS =====
+    // CUSTOMERS
 
     void registerCustomer() {
         printTitle("REGISTER A CUSTOMER");
@@ -453,7 +453,7 @@ public:
         cout << customerCount << " customer(s).\n";
     }
 
-    // ===== SALES REPORT =====
+    // SALES REPORT
 
     void salesReport() {
         printTitle("SALES REPORT");
@@ -481,7 +481,7 @@ public:
         cout << "Average sale    : $" << grandTotal / saleCount << "\n";
     }
 
-    // ===== SELLING (CHECKOUT) =====
+    // SELLING (CHECKOUT)
 
     // Shows the cart. The cart is made of TWO parallel arrays:
     // cartId[i] is the product, cartQty[i] is how many of it.
@@ -510,7 +510,7 @@ public:
     void makeSale() {
         printTitle("NEW SALE");
 
-        // ----- Step 1: Who is the customer? -----
+        // Step 1: Who is the customer? 
         Customer* customer = nullptr;           // starts as "no customer"
         int customerId = getInt("Customer ID (0 for a guest): ", 0, 99999);
         if (customerId != 0) {
@@ -523,7 +523,7 @@ public:
             }
         }
 
-        // ----- Step 2: Fill the cart -----
+        // Step 2: Fill the cart
         int cartId[MAX_CART];                   // product IDs in the cart
         int cartQty[MAX_CART];                  // quantities in the cart
         int cartCount = 0;                      // how many cart slots are used
@@ -574,7 +574,7 @@ public:
                 }
                 break;
             }
-            case 2:                         // ----- CHECKOUT -----
+            case 2:                         // CHECKOUT
                 if (cartCount == 0) {
                     cout << "  You cannot check out with an empty cart.\n";
                 }
@@ -582,13 +582,13 @@ public:
                     shopping = false;       // ends the while loop
                 }
                 break;
-            case 3:                         // ----- CANCEL -----
+            case 3:                         // CANCEL
                 cout << "Sale cancelled.\n";
                 return;                     // leave the function
             }
         }
 
-        // ----- Step 3: Work out the bill -----
+        // Step 3: Work out the bill
         double subtotal = 0.0;
         double discount = 0.0;
         int totalUnits = 0;
@@ -604,7 +604,7 @@ public:
         double tax = roundMoney((subtotal - discount) * TAX_RATE);
         double total = roundMoney(subtotal - discount + tax);
 
-        // ----- Step 4: Payment -----
+        // Step 4: Payment
         cout << "\nAmount to pay: $" << fixed << setprecision(2) << total << "\n";
         cout << "  1. Cash\n  2. Card\n";
         int method = getInt("Payment method: ", 1, 2);
@@ -626,7 +626,7 @@ public:
             cout << "Card approved.\n";
         }
 
-        // ----- Step 5: Update stock and records -----
+        // Step 5: Update stock and records
         for (int i = 0; i < cartCount; i++) {
             Product* p = findProduct(cartId[i]);
             p->removeStock(cartQty[i]);
@@ -645,7 +645,7 @@ public:
             saleCount++;
         }
 
-        // ----- Step 6: Print the receipt -----
+        // Step 6: Print the receipt
         cout << "\n**************************************************\n";
         cout << "            DEPARTMENTAL STORE RECEIPT\n";
         cout << "**************************************************\n";
